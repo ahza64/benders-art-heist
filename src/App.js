@@ -12,6 +12,11 @@ function App() {
     console.log(search);
   }
 
+  useEffect(() => {
+    setSearch(search)
+    console.log("useEffect search", search);
+  });
+
   return (
     <div>
       <input type="text" onChange={e => updateSearch(e)} value={search}/>
