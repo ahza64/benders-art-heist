@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const setter = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    return () => {
+      clearTimeout(setter);
+    }
+  }, [value, delay]);
+  return debouncedValue;
+}
 
 function App() {
-
-
-  const [search, setSearch] = useState('enter here');
-
+  const [search, setSearch] = useState('');
+  const debouncedValue = useDebounce(search, 700);
   function updateSearch(e) {
-    console.log("updateSearch", e.target.value);
     setSearch(e.target.value);
-    console.log(search);
   }
 
   useEffect(() => {
-    setSearch(search)
-    console.log("useEffect search", search);
-  });
-
+    console.log("debounced value", debouncedValue);
+  }, [debouncedValue]);
+  
   return (
     <div>
       <input type="text" onChange={e => updateSearch(e)} value={search}/>
